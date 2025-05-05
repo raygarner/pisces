@@ -1,0 +1,7 @@
+scale set struct
+make each entry in the scale table a pointer to a scale struct
+struct for search return vals
+	member for mode count 
+	member for unique count
+parameterise mode filtering
+implement hash_vals[MODES] Scale member
