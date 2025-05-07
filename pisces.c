@@ -135,7 +135,6 @@ search_child_scales(int pitches_to_add, int max_semitones, struct Scale *scale)
 				new_scale->semitone_counter++;
 				if (new_scale->has_leaped == FALSE)
 					new_scale->starting_semitones++;
-
 			} else {
 				new_scale->semitone_counter = 0;
 				new_scale->has_leaped = TRUE;

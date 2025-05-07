@@ -1,9 +1,9 @@
 NAME=pisces
 SRC=$(NAME).c
-FLAGS=-lm -O2
+FLAGS=-lm
 
 all: $(SRC)
-	$(CC) $(FLAGS) $(SRC) -o $(NAME)
+	$(CC) $(SRC) $(FLAGS) -o $(NAME)
 
 clean:
 	rm -f $(NAME)

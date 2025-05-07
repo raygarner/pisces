@@ -2,6 +2,9 @@ Pisces
 ======
 Pisces is a program to explore the possibilities of musical scales
 
+Example: generate all 7 note scales with no more than 4 semitones in a row
+./pisces 7 4
+
 
 The Problem
 -----------
