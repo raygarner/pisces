@@ -101,10 +101,9 @@ update_scale_table(const struct Scale *scale)
 {
 	int mode;
 
-	for (mode = 0; mode < OCTAVE; mode++) {
+	for (mode = 0; mode < OCTAVE; mode++) 
 		if (scale->pitch_classes[mode])
 			scale_table[hash_scale(scale, mode)] = ACTIVE;
-	}
 }
 
 int
@@ -118,9 +117,8 @@ search_child_scales(int pitches_to_add, int max_semitones, struct Scale *scale)
 			print_scale(scale);
 			update_scale_table(scale);
 			ret = 1;
-		} else {
+		} else
 			ret = 0;
-		}
 		free(scale);
 		return ret;
 			
@@ -153,9 +151,8 @@ init_scale()
 
 	scale->index = 0;
 	scale->pitch_classes[0] = ACTIVE;
-	for (i = 1; i < OCTAVE; i++) {
+	for (i = 1; i < OCTAVE; i++)
 		scale->pitch_classes[i] = INACTIVE;
-	}
 	scale->semitone_counter = 0;
 	scale->starting_semitones = 0;
 	scale->has_leaped = FALSE;
