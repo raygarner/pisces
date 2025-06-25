@@ -30,6 +30,7 @@ void init_scale_table();
 
 int scale_table[TABLE_SIZE];
 
+/* circular addition */
 int
 apply_interval(int pitch_class, int interval)
 {
@@ -38,6 +39,10 @@ apply_interval(int pitch_class, int interval)
 	return (ret >= OCTAVE ? ret - OCTAVE : ret);
 }
 
+/*
+ * Treats the scale bitfield as a binary number and returns its decimal value
+ * Mode: index of the LSB
+ */
 int
 hash_scale(const struct Scale *scale, int mode)
 {
@@ -62,6 +67,12 @@ print_scale(const struct Scale *scale)
 	putchar('\n');
 }
 
+/* 
+ * From this point in the scale, what is the largest interval that could
+ * legally be. That is, it doesn't cause the scale to exceed an octave and 
+ * leaves enough room to add the remaining notes which needed to be added 
+ * still
+ */
 int
 max_interval_size(int index, int pitches_to_add)
 {
@@ -84,6 +95,14 @@ copy_scale(const struct Scale *scale)
 	return new_scale;
 }
 
+/*
+ * Returns TRUE if the consecutive tone limit has been exceeded by adding this
+ * proposed interval. This may happen in 2 ways- if this interval is a semitone
+ * then it will be consecutive with the previous tone, or if the interval added
+ * means the 11th of the 12th tone system is activated, meaning it will be
+ * consecutive with the very first note of the scale. In other words, it will
+ * have 'wrapped around'.
+ */
 int
 semitone_limit_exceeded(const struct Scale *scale, int interval_to_add, int max_semitones)
 {
@@ -96,6 +115,7 @@ semitone_limit_exceeded(const struct Scale *scale, int interval_to_add, int max_
 	return !(adj_semitones < max_semitones);
 }
 
+/* flags entries in the table as enumerated for all modes of this scale */
 void
 update_scale_table(const struct Scale *scale)
 {
@@ -106,6 +126,14 @@ update_scale_table(const struct Scale *scale)
 			scale_table[hash_scale(scale, mode)] = ACTIVE;
 }
 
+/*
+ * Enumerates all possible 1 octave scales of N notes at most M consective
+ * chromatic pitches. Starting from the first pitch, a branch is created for
+ * each possible interval which could occur from this pitch, with this process
+ * being recursively applied to each subsequent branch until the scale has been
+ * completed. The return value is an integer representing the total number of 
+ * scales which have been enumerated.
+ */
 int
 search_child_scales(int pitches_to_add, int max_semitones, struct Scale *scale)
 {
@@ -176,7 +204,7 @@ init_scale_table()
 	int i;
 
 	for (i = 0; i < TABLE_SIZE; i++)
-		scale_table[i] = FALSE;
+		scale_table[i] = INACTIVE;
 }
 
 int

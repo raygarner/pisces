@@ -1,3 +1,4 @@
+implement 'consecutive tones' terminology instead of 'max semitones'
 scale set struct
 make each entry in the scale table a pointer to a scale struct
 struct for search return vals
@@ -6,4 +7,3 @@ struct for search return vals
 parameterise mode filtering
 implement hash_vals[MODES] Scale member
 be able to take hash val as input and display pitch class bit field
-
