@@ -2,15 +2,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TABLE_SIZE 4096
+#define TABLE_SIZE 4096 /* 000000000000 to 111111111111 */
 #define MODES 12
 
 enum { FALSE, TRUE };
 enum { INACTIVE, ACTIVE };
 enum { SEMITONE = 1, WHOLETONE = 2, LEADING_TONE = 11, OCTAVE = 12};
 
+/*
+ * A bitfield of 12 width is used to represent each scale, for example
+ * 111111111111 is the chromatic scale and 101101010110 is the dorian scale.
+ * Scales start as 100000000000 and are built from there, with index being used
+ * to indicate the location of the most recently activated tone. starting_semitones
+ * semitones indicates how many consecutive tones there are at the start of the
+ * scale, so this number can be summed with any consecutive tones at the end
+ * of the scale when things 'wrap around'. If has_leaped is true then
+ * starting_semitones will stop being incremented when semitone intervals are
+ * added. 
+ */
 struct Scale {
-	int pitch_classes[OCTAVE];
+	int pitch_classes[OCTAVE]; /* bitfield representing 12 tones */
 	int index;
 	int semitone_counter;
 	int starting_semitones;
@@ -28,6 +39,7 @@ struct Scale *init_scale();
 int enumerate_scales(int pitches_to_add, int max_semitones);
 void init_scale_table();
 
+/* hash table for every possible 1 octave scale in the 12 tone system */
 int scale_table[TABLE_SIZE];
 
 /* circular addition */
