@@ -36,4 +36,3 @@ a decimal value. For example the chromatic scale hashes to 4095.
 because Y can be reached by rotating X 2 places to the right so only 1 or the 
 other should be counted in the enumeration.
 
-

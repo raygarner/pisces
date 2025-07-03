@@ -161,7 +161,6 @@ search_child_scales(int pitches_to_add, int max_semitones, struct Scale *scale)
 			ret = 0;
 		free(scale);
 		return ret;
-			
 	}
 	upper = max_interval_size(scale->index, pitches_to_add);
 	for (interval = SEMITONE; interval <= upper; interval++) {
@@ -206,7 +205,9 @@ enumerate_scales(int pitches_to_add, int max_semitones)
 	int number_of_scales;
 	
 	number_of_scales = search_child_scales(pitches_to_add-1, max_semitones, scale);
-	free(scale);
+	/* if this is 0 then it scale will already have been freed */
+	if (pitches_to_add > 1)
+		free(scale);
 	return number_of_scales;
 }
 
